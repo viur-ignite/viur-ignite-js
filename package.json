@@ -1,0 +1,33 @@
+{
+	"name": "viur-ignite-js",
+	"version": "1.0.0",
+	"description": "An extension of viur-ignite",
+	"main": "index.js",
+	"scripts": {
+		"test": "\"echo Hello world\""
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/viur-ignite/viur-ignite-js.git"
+	},
+	"keywords": [
+		"viur",
+		"ignite",
+		"js"
+	],
+	"author": "VIUR",
+	"license": "GPL-3.0",
+	"bugs": {
+		"url": "https://github.com/viur-ignite/viur-ignite-js/issues"
+	},
+	"homepage": "https://github.com/viur-ignite/viur-ignite-js#readme",
+	"devDependencies": {},
+	"dependencies": {
+		"file-exists": "latest",
+		"gulp": "latest",
+		"gulp-rename": "latest",
+		"prompt": "latest",
+		"gulp-uglify": "latest",
+		"gulp-concat": "latest"
+	}
+}
