@@ -9,9 +9,9 @@ var prompt = require('prompt');
 
 
 module.exports = {
-	buildJS: function(src, dest) {
+	build: function(src, dest) {
 		if (typeof(src)==='undefined') src = '/sources/js/app.js';
-		if (typeof(dest)==='undefined') dest = '/appengine/js/';
+		if (typeof(dest)==='undefined') dest = '/appengine/static/js/';
 
 		src = dirname(dirname(__dirname)) + src; 
 		dest = dirname(dirname(__dirname)) + dest;
