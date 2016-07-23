@@ -1,67 +1,61 @@
-var gulp = require('gulp');
-var rename = require('gulp-rename');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
+"use strict";
 
-var path = require('path');
-var fileExists = require('file-exists');
-var prompt = require('prompt');
+const PLUGIN_NAME = 'viur-ignite-js';
+
+var	gulp = require('gulp'),
+	rename = require('gulp-rename'),
+	concat = require('gulp-concat'),
+	uglify = require('gulp-uglify');
+
+var	path = require('path'),
+	isThere = require('is-there');
 
 
 module.exports = {
-	build: function(src, dest) {
-		if (typeof(src)==='undefined') src = '/sources/js/app.js';
-		if (typeof(dest)==='undefined') dest = '/appengine/static/js/';
+	build: function(options) {
 
-		src = dirname(dirname(__dirname)) + src; 
-		dest = dirname(dirname(__dirname)) + dest;
+		// Set Default Options
+		var defaultOptions = {
+			src: './sources/js/app.js',
+			dest: './appengine/static/js'
+		};
+
+		if (typeof(options)==='undefined') options = {};
+		for (var key in defaultOptions) {
+			if (typeof(options[key])==='undefined') options[key] = defaultOptions[key];
+		}
 
 		// minify js and put in single file
-		return gulp.src([__dirname+'/js/viur.js', src])
+		return gulp.src([__dirname+'/js/viur.js', options.src])
 			.pipe(concat('app.js'))
 			.pipe(uglify())
-			.pipe(gulp.dest(dest))
+			.pipe(gulp.dest(options.dest))
 	},
 
-	init: function() {
-		if(fileExists('./sources/js/app.js')) { 
-			setTimeout(function() {
+	init: function(options) {
 
-				prompt.start();
+		// Set Default Options
+		var defaultOptions = {
+			dest: './sources/js/app.js',
+			overwrite: false
+		};
 
-				var property = {
-					name: 'yesno',
-					message: 'Are you sure to overwrite app.js in sources/js/?',
-					validator: /y[es]*|n[o]?/,
-					warning: 'Must respond yes or no',
-					default: 'no'
-				};
+		if (typeof(options)==='undefined') options = {};
+		for (var key in defaultOptions) {
+			if (typeof(options[key])==='undefined') options[key] = defaultOptions[key]
+		}
 
-				prompt.get(property, function (err, result) {
-					console.log('Your Input: ' + result.yesno);
 
-					if(result.yesno == "yes" || result.yesno == "y") {
-						prompt.stop();
-						return copyPrototype();
-					} else {
-						prompt.stop();
-						return false;
-					}
-				});
-
-			}, 5);
+		if(isThere(options.dest) && (options.overwrite === false || options.overwrite === "false")) {
+			throw new gutil.PluginError(PLUGIN_NAME, "'" + options.dest + "' already exists\n\tcall function with option overwrite: true");
 		} else {
-			return copyPrototype();
+			return copyPrototype(options.dest);
 		}
 	}
 };
 
-function dirname(path) {
-	return path.replace(/\\/g, '/')
-		.replace(/\/[^\/]*\/?$/, '');
-}
-function copyPrototype() {
+function copyPrototype(dest) {
 	return gulp.src(__dirname+'/prototype/app.js')
-		.pipe(rename('app.js'))
-		.pipe(gulp.dest('./sources/js'));
+		.pipe(rename(path.basename(dest)))
+		.pipe(gulp.dest(path.dirname(dest)));
 }
