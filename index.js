@@ -3,6 +3,7 @@
 const PLUGIN_NAME = 'viur-ignite-js';
 
 var	gulp = require('gulp'),
+	gutil = require('gulp-util'),
 	rename = require('gulp-rename'),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify');
@@ -20,7 +21,7 @@ module.exports = {
 			dest: './appengine/static/js'
 		};
 
-		if (typeof(options)==='undefined') options = {};
+		if (typeof(options)==='undefined') var options = {};
 		for (var key in defaultOptions) {
 			if (typeof(options[key])==='undefined') options[key] = defaultOptions[key];
 		}
@@ -29,7 +30,7 @@ module.exports = {
 		return gulp.src([__dirname+'/js/viur.js', options.src])
 			.pipe(concat('app.js'))
 			.pipe(uglify())
-			.pipe(gulp.dest(options.dest))
+			.pipe(gulp.dest(options.dest));
 	},
 
 	init: function(options) {
@@ -40,7 +41,7 @@ module.exports = {
 			overwrite: false
 		};
 
-		if (typeof(options)==='undefined') options = {};
+		if (typeof(options)==='undefined') var options = {};
 		for (var key in defaultOptions) {
 			if (typeof(options[key])==='undefined') options[key] = defaultOptions[key]
 		}
