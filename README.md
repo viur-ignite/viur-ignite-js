@@ -28,7 +28,14 @@ gulp.task('default', function() {
 });
 ```
 
-Run first the init task with ```$ gulp init``` than you can edit the app.js and minfiy the js with ```$ gulp js```
+Run first the init task with
+```
+$ gulp init
+```
+than you can edit the app.js and minfiy the js with
+```
+$ gulp
+```
 
 
 ### Be individual
