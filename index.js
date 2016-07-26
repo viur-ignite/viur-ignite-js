@@ -29,7 +29,9 @@ module.exports = {
 		// minify js and put in single file
 		return gulp.src([__dirname+'/js/viur.js', options.src])
 			.pipe(concat('app.js'))
+			.pipe(gulp.dest(options.dest))
 			.pipe(uglify())
+			.pipe(rename('app.min.js'))
 			.pipe(gulp.dest(options.dest));
 	},
 

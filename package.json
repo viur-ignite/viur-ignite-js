@@ -4,7 +4,8 @@
   "description": "Javascript Libary | Extension of viur-ignite-css",
   "main": "index.js",
   "scripts": {
-    "test": "\"echo Hello world\""
+    "test": "node index.js",
+    "lint": "xo"
   },
   "repository": {
     "type": "git",
@@ -15,7 +16,8 @@
     "viur",
     "ignite",
     "js",
-    "Libary"
+    "Libary",
+    "❤"
   ],
   "author": "VIUR",
   "license": "GPL-3.0",
@@ -30,5 +32,8 @@
     "gulp-uglify": "^1.5.4",
     "gulp-util": "^3.0.7",
     "is-there": "^4.3.3"
+  },
+  "devDependencies": {
+    "xo": "^0.16.0"
   }
 }
