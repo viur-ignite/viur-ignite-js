@@ -10,14 +10,14 @@
 /**
  * PURE JS FUNCTIONS
  */
-var root = function(base, decimals) {
-	return Math.pow(base, 1/decimals);
+var root = function (base, decimals) {
+	return Math.pow(base, 1 / decimals);
 };
-Math['root'] = Math['root'] || root;
+Math.root = Math.root || root;
 
 
-function formatBytes(bytes, decimals) {
-	if(bytes == 0) return '0 Byte';
+function formatBytes (bytes, decimals) {
+	if (bytes == 0) return '0 Byte';
 	var k = 1000;
 	var dm = decimals || 3;
 	var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
@@ -32,7 +32,7 @@ function formatBytes(bytes, decimals) {
  */
 $(function() {
 	// scroll to an element
-	$.fn.scrollto = function(options) {
+	$.fn.scrollto = function (options) {
 		options = $.extend({
 			speed: 1000,
 			easing: 'swing',
@@ -69,7 +69,7 @@ $(function() {
 	};
 
 	// enable scroll anchor for an element
-	$.fn.scrollAnchor = function(options) {
+	$.fn.scrollAnchor = function (options) {
 		this.on('click', function(e) {
 			e.preventDefault();
 			var $this = $(this);
@@ -82,14 +82,14 @@ $(function() {
 				return console.error('No Scroll Target');
 			
 			return $(target).scrollto(options);
-		})
-	}
-})
+		});
+	};
+});
 
 
 
 /*
-function scrolltoPlace(place, duration, effect) {
+function scrolltoPlace (place, duration, effect) {
 	try {
 		if (typeof place !== 'number') throw 'Invalid value "' + place + '" for scrolltoNode'
 		duration = typeof duration === 'number' ? duration : 1000; 
