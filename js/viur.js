@@ -61,12 +61,13 @@ $(function() {
 			},
 			complete: function() {
 				if (!triggeredEndCallback) options.onScrollEnd.call(null, $this, null);
-				triggeredStartCallback = true;
+				triggeredEndCallback = true;
 			}
 		});
 
 		return this;
 	};
+
 
 	// enable scroll anchor for an element
 	$.fn.scrollAnchor = function (options) {
@@ -84,6 +85,127 @@ $(function() {
 			return $(target).scrollto(options);
 		});
 	};
+
+
+	// popup
+	$.fn.popup = function (options) {
+		options = $.extend({
+			toggleClass: 'is-active',
+			overlayClass: 'popup-overlay',
+			onOpen: $.noop,
+			onClose: $.noop
+		}, options);
+
+		if (!elementExist($(this))) {
+			console.error('element doesnt exist');
+			return false;
+		}
+
+		// use only to the first element
+		$this = $(this[0]);
+
+		// open popup
+		__open();
+
+		// close on X-click
+		$this.find('.popup-close').on('click', __close);
+
+
+		function __open () {
+			$('.' + options.overlayClass).addClass(options.toggleClass); // overlay show
+			$this.addClass(options.toggleClass); // popup show
+			options.onOpen.call(null, $this, null);
+		}
+
+		function __close () {
+			$('.' + options.overlayClass).removeClass(options.toggleClass); // overlay hide
+			$this.removeClass(options.toggleClass); // popup hide
+			options.onClose.call(null, $this, null);
+		}
+
+		return this;
+	};
+
+	$.createPopup = function(options) {
+		options = $.extend({
+			title: 'MESSAGE',
+			content: 'THIS IS MY MESSAGE',
+			footer: '',
+			button: [
+				{title:'Close', class: "popup-close"},
+			],
+			onopen: $.noop,
+			onClose: $.noop
+		}, options);
+
+
+		// create overlay if doesnt exist
+		if (!elementExist( $('.popup-overlay') ))
+			$('body').append('<div class="popup-overlay"></div>');
+
+		// remove other popups
+		$('.popup').remove();
+
+
+		var button = '';
+		if (Array.isArray( options.button )) {
+			options.button.forEach(function(val, key) {
+				if (typeof options.button[key].onClick === 'undefined') options.button[key].onClick = $.noop;
+
+				if(!!val.custom) {
+					button += val.custom;
+				} else {
+					button += __getButtonPrototype()
+						.replace('{{class}}', !!val.class ? val.class : '')
+						.replace('{{style}}', !!val.style ? val.style : '')
+						.replace('{{index}}', key)
+						.replace('{{title}}', !!val.title ? val.title : '');
+				}
+			})	
+		}
+
+		var popup = __getPopupPrototype()
+			.replace('{{header}}', options.title)
+			.replace('{{content}}', options.content)
+			.replace('{{button}}', button)
+			.replace('{{footer}}', options.footer);
+		
+		var $popup = $(popup)
+			.popup({onOpen: options.onOpen, onClose: options.onClose})
+			.appendTo('body');
+
+
+		// action by buttons with data-index
+		$popup.find('.formActions > button[data-index]').bind('click', function () {
+			var index = $(this).data('index');
+			var callback = options.button[index].onClick;
+			callback($popup);
+		})
+
+
+		function __getPopupPrototype() {
+			return '<div class="popup">\
+						<div class="popup-box">\
+							<header class="popup-header">{{header}}</header>\
+							<div class="popup-content">\
+								{{content}}\
+								<div class="formActions">{{button}}</div>\
+							</div>\
+							<footer class="popup-footer">{{footer}}</footer>\
+							<button class="popup-close has-icon i-cross"></button>\
+						</div>\
+					</div>';
+		}
+		function __getButtonPrototype() {
+			return '<button class="btn {{class}}" style="{{style}}" data-index="{{index}}">{{title}}</button>';
+		}
+	}
+
+
+	function elementExist (obj) {
+		return (obj.length > 0) === true;
+	}
+
 });
 
 
