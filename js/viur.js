@@ -18,10 +18,12 @@ Math.root = Math.root || root;
 
 function formatBytes (bytes, decimals) {
 	if (bytes == 0) return '0 Byte';
+
 	var k = 1000;
 	var dm = decimals || 3;
 	var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 	var i = Math.floor(Math.log(bytes) / Math.log(k));
+
 	return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
@@ -71,8 +73,9 @@ $(function() {
 
 	// enable scroll anchor for an element
 	$.fn.scrollAnchor = function (options) {
-		this.on('click', function(e) {
-			e.preventDefault();
+		this.on('click', function(event) {
+			event.preventDefault();
+
 			var $this = $(this);
 
 			if (!!$this.data('target'))
@@ -88,7 +91,9 @@ $(function() {
 
 
 	// toggle class
-	$('[data-scroll-target]').on('click', function () {
+	$('[data-scroll-target]').on('click', function (event) {
+		event.preventDefault();
+
 		var target	= $(this).data('scroll-target');
 		var speed	= $(this).data('scroll-speed');
 		var easing	= $(this).data('scroll-easing');
@@ -116,7 +121,7 @@ $(function() {
 			return false;
 		}
 
-		// use only to the first element
+		// use only the first element
 		$this = $(this[0]);
 
 		// open popup
@@ -144,8 +149,8 @@ $(function() {
 	// create new popup
 	$.createPopup = function (options) {
 		options = $.extend({
-			title: 'MESSAGE',
-			content: 'THIS IS MY MESSAGE',
+			title: 'VIUR Popup',
+			content: 'This is a VIUR popup',
 			footer: '',
 			button: [
 				{title:'Close', class: "popup-close"},
@@ -164,8 +169,8 @@ $(function() {
 
 		var button = '';
 		if (Array.isArray( options.button )) {
-			options.button.forEach(function(val, key) {
-				if (typeof options.button[key].onClick === 'undefined') options.button[key].onClick = $.noop;
+			options.button.forEach(function(val, index) {
+				if (typeof options.button[index].onClick === 'undefined') options.button[index].onClick = $.noop;
 
 				if(!!val.custom) {
 					button += val.custom;
@@ -173,7 +178,7 @@ $(function() {
 					button += __getButtonPrototype()
 						.replace('{{class}}', !!val.class ? val.class : '')
 						.replace('{{style}}', !!val.style ? val.style : '')
-						.replace('{{index}}', key)
+						.replace('{{index}}', index)
 						.replace('{{title}}', !!val.title ? val.title : '');
 				}
 			})
@@ -193,6 +198,7 @@ $(function() {
 		$popup.find('.formActions > button[data-index]').on('click', function () {
 			var index = $(this).data('index');
 			var callback = options.button[index].onClick;
+
 			callback($popup);
 		});
 
@@ -220,7 +226,9 @@ $(function() {
 	}
 
 	// toggle class
-	$('[data-toggler]').on('click', function () {
+	$('[data-toggler]').on('click', function (event) {
+		event.preventDefault();
+
 		var dataToggle = $(this).data('toggler');
 		var $toggleObj = $(dataToggle);
 		var toggleClass = $toggleObj.data('toggle');
