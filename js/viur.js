@@ -53,7 +53,7 @@ $(function() {
 		$('html,body').animate({
 			scrollTop: place
 		}, {
-			duration: options.duration,
+			duration: options.speed,
 			easing: options.easing,
 			start: function() {
 				if (!triggeredStartCallback) options.onScrollStart.call(null, $this, null);
@@ -85,6 +85,21 @@ $(function() {
 			return $(target).scrollto(options);
 		});
 	};
+
+
+	// toggle class
+	$('[data-scroll-target]').on('click', function () {
+		var target	= $(this).data('scroll-target');
+		var speed	= $(this).data('scroll-speed');
+		var easing	= $(this).data('scroll-easing');
+		var $target	= $(target);
+		var options = {};
+
+		if (typeof speed != "undefined") options.speed = speed;
+		if (typeof easing != "undefined") options.easing = easing;
+
+		$target.scrollto(options);
+	})
 
 
 	// popup
@@ -212,5 +227,4 @@ $(function() {
 
 		$toggleObj.toggleClass(toggleClass);
 	})
-
 })
