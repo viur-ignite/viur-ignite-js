@@ -3,7 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Addded
-- Functions: Scroll, formatBytes, nth-root
+- Functions
+	- Scroll
+	- formatBytes
+	- nth-root
+	- popup
+	- class toggler
+
 
 ## [1.0.3] - 2016-07-24
 - Changelog started here
