@@ -46,10 +46,10 @@ $(function() {
 		var thisTop = $this.offset().top;
 		var bodyTop = $('body').offset().top;
 		var place = thisTop - bodyTop;
-	
-		// need to avoid trigger callback twice, caused by the double animation of body,html	
+
+		// need to avoid trigger callback twice, caused by the double animation of body,html
 		var triggeredStartCallback = triggeredEndCallback = false;
-		
+
 		$('html,body').animate({
 			scrollTop: place
 		}, {
@@ -74,14 +74,14 @@ $(function() {
 		this.on('click', function(e) {
 			e.preventDefault();
 			var $this = $(this);
-			
+
 			if (!!$this.data('target'))
 				var target = $this.data('target');
 			else if (!!$this.attr('href'))
 				var target = $this.attr('href');
 			else
 				return console.error('No Scroll Target');
-			
+
 			return $(target).scrollto(options);
 		});
 	};
@@ -96,7 +96,7 @@ $(function() {
 			onClose: $.noop
 		}, options);
 
-		if (!elementExist($(this))) {
+		if (! $(this).elementExist() ) {
 			console.error('element doesnt exist');
 			return false;
 		}
@@ -109,7 +109,6 @@ $(function() {
 
 		// close on X-click
 		$this.find('.popup-close').on('click', __close);
-
 
 		function __open () {
 			$('.' + options.overlayClass).addClass(options.toggleClass); // overlay show
@@ -126,7 +125,9 @@ $(function() {
 		return this;
 	};
 
-	$.createPopup = function(options) {
+
+	// create new popup
+	$.createPopup = function (options) {
 		options = $.extend({
 			title: 'MESSAGE',
 			content: 'THIS IS MY MESSAGE',
@@ -138,9 +139,8 @@ $(function() {
 			onClose: $.noop
 		}, options);
 
-
 		// create overlay if doesnt exist
-		if (!elementExist( $('.popup-overlay') ))
+		if (! $('.popup-overlay').elementExist() )
 			$('body').append('<div class="popup-overlay"></div>');
 
 		// remove other popups
@@ -161,7 +161,7 @@ $(function() {
 						.replace('{{index}}', key)
 						.replace('{{title}}', !!val.title ? val.title : '');
 				}
-			})	
+			})
 		}
 
 		var popup = __getPopupPrototype()
@@ -169,19 +169,17 @@ $(function() {
 			.replace('{{content}}', options.content)
 			.replace('{{button}}', button)
 			.replace('{{footer}}', options.footer);
-		
+
 		var $popup = $(popup)
 			.popup({onOpen: options.onOpen, onClose: options.onClose})
 			.appendTo('body');
 
-
 		// action by buttons with data-index
-		$popup.find('.formActions > button[data-index]').bind('click', function () {
+		$popup.find('.formActions > button[data-index]').on('click', function () {
 			var index = $(this).data('index');
 			var callback = options.button[index].onClick;
 			callback($popup);
-		})
-
+		});
 
 		function __getPopupPrototype() {
 			return '<div class="popup">\
@@ -201,32 +199,18 @@ $(function() {
 		}
 	}
 
-
-	function elementExist (obj) {
-		return (obj.length > 0) === true;
+	// check if an element exist
+	$.fn.elementExist = function(obj) {
+		return ($(this).length > 0) === true;
 	}
 
-});
+	// toggle class
+	$('[data-toggler]').on('click', function () {
+		var dataToggle = $(this).data('toggler');
+		var $toggleObj = $(dataToggle);
+		var toggleClass = $toggleObj.data('toggle');
 
+		$toggleObj.toggleClass(toggleClass);
+	})
 
-
-/*
-function scrolltoPlace (place, duration, effect) {
-	try {
-		if (typeof place !== 'number') throw 'Invalid value "' + place + '" for scrolltoNode'
-		duration = typeof duration === 'number' ? duration : 1000; 
-
-		$('html,body').animate({
-			scrollTop: place
-		}, {
-			duration: duration
-		});
-
-		return true;
-	} 
-	catch(e) {
-		console.error(e);
-		return false;
-	}
-}
-*/
+})
