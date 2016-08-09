@@ -100,11 +100,11 @@ $(function() {
 		var $target	= $(target);
 		var options = {};
 
-		if (typeof speed != "undefined") options.speed = speed;
-		if (typeof easing != "undefined") options.easing = easing;
+		if (typeof speed != 'undefined') options.speed = speed;
+		if (typeof easing != 'undefined') options.easing = easing;
 
 		$target.scrollto(options);
-	})
+	});
 
 
 	// popup
@@ -153,7 +153,7 @@ $(function() {
 			content: 'This is a VIUR popup',
 			footer: '',
 			button: [
-				{title:'Close', class: "popup-close"},
+				{title:'Close', class: 'popup-close'}
 			],
 			onopen: $.noop,
 			onClose: $.noop
@@ -169,7 +169,7 @@ $(function() {
 
 		var button = '';
 		if (Array.isArray( options.button )) {
-			options.button.forEach(function(val, index) {
+			options.button.forEach(function (val, index) {
 				if (typeof options.button[index].onClick === 'undefined') options.button[index].onClick = $.noop;
 
 				if(!!val.custom) {
@@ -181,7 +181,7 @@ $(function() {
 						.replace('{{index}}', index)
 						.replace('{{title}}', !!val.title ? val.title : '');
 				}
-			})
+			});
 		}
 
 		var popup = __getPopupPrototype()
@@ -218,12 +218,12 @@ $(function() {
 		function __getButtonPrototype() {
 			return '<button class="btn {{class}}" style="{{style}}" data-index="{{index}}">{{title}}</button>';
 		}
-	}
+	};
 
 	// check if an element exist
-	$.fn.elementExist = function(obj) {
+	$.fn.elementExist = function() {
 		return ($(this).length > 0) === true;
-	}
+	};
 
 	// toggle class
 	$('[data-toggler]').on('click', function (event) {
@@ -234,5 +234,159 @@ $(function() {
 		var toggleClass = $toggleObj.data('toggle');
 
 		$toggleObj.toggleClass(toggleClass);
-	})
+	});
+
+	// suggestions for an input field
+	$.fn.suggestions = function (options) {
+		options = $.extend({
+			data: [],
+			searchType: 'contains', // contains or startWith
+			url: '',
+			getAttribute: 'q',
+			type: 'data', // type: url or data
+			caseSensitive: false,
+			onSelect: $.noop, // after select
+			onType: $.noop // ^= keyup
+		}, options);
+
+		var $elements = $(this);
+
+		if ($elements.elementExist()) {
+			$elements.each(function (index) {
+				var $element	= $(this);
+				var offset		= $element.offset();
+				var width		= $element.innerWidth(); // use here innerWidth because of the border
+				var height		= $element.outerHeight();
+				var moveIndex	= 0; // index for key up down
+
+				var $suggestionBox = $( __getSuggestionBoxPrototype() )
+					.appendTo('body')
+					.width(width)
+					.css('left', offset.left)
+					.css('top', offset.top + height)
+					.hide();
+
+				$element.on('keydown', function(e) {
+					var key = e.key;
+
+					switch (key) {
+						case 'ArrowUp':
+							moveIndex--;
+							if (moveIndex === 0) {
+								moveIndex = $suggestionBox.find('.suggestion-box-item').length;
+							}
+							$suggestionBox.find('.suggestion-box-item').removeClass('is-active');
+							$( $suggestionBox.find('.suggestion-box-item')[moveIndex - 1] ).addClass('is-active');
+							break;
+
+						case 'ArrowDown':
+							moveIndex++;
+							if (moveIndex > $suggestionBox.find('.suggestion-box-item').length) {
+								moveIndex = 1;
+							}
+							$suggestionBox.find('.suggestion-box-item').removeClass('is-active');
+							$( $suggestionBox.find('.suggestion-box-item')[moveIndex - 1] ).addClass('is-active');
+							break;
+
+						case 'Enter':
+							var text = $suggestionBox.find('.suggestion-box-item.is-active').text();
+							$element.val(text);
+							$suggestionBox.hide();
+							break;
+
+						default:
+							var input = $element.val();
+							__loadSuggestions(input, $suggestionBox, $element);
+							moveIndex = 0; // reset moveIndex for new suggestions
+							break;
+					}
+				});
+			});
+		}
+
+		function __loadSuggestions(input, $suggestionBox, $element) {
+			var arr		= __searchSuggestions(input);
+			var items	= '';
+
+			arr.forEach(function (value, index) {
+				items += __getSuggestionItemPrototype()
+					.replace('{{value}}', value);
+			})
+
+			$suggestionBox.html(
+				__getSuggestionBoxContentPrototype()
+					.replace('{{items}}', items)
+			).show();
+
+			$suggestionBox.find('.suggestion-box-item').on('click', function(e) {
+				var text = $(this).text();
+				$element.val(text);
+				$suggestionBox.hide();
+			})
+		}
+
+		function __searchSuggestions(q) {
+			if (options.caseSensitive == false) {
+				q = q.toLowerCase();
+			}
+
+			switch (options.type) {
+				case 'url':
+					var arr;
+
+					$.ajax({
+						url: options.url,
+						data: {q: q},
+						async: false, // Its deprecated, but sync ajax sucks
+						dataType: 'json',
+						success: function (response) {
+							arr = response;
+						}
+					});
+
+					return arr;
+					break;
+
+				case 'data':
+					if (typeof options.data != 'undefined' && Array.isArray(options.data)) {
+						var data	= options.data;
+						var arr		= [];
+
+						data.forEach(function (value, index) {
+							var searchvalue = value; // use an extra variable that the value isnt lowercase
+							if (options.caseSensitive == false) {
+								searchvalue = value.toLowerCase();
+							}
+
+							if ((options.searchType == 'contains' && searchvalue.indexOf(q) !== -1) ||
+								(options.searchType == 'startWith' && searchvalue.indexOf(q) === 0)
+							) {
+								arr.push(value)
+							}
+						})
+
+						return arr;
+					}
+					break;
+
+				default:
+					// function ends here
+					// because suggesions are missing
+					return this;
+					break;
+			}
+		}
+
+		function __getSuggestionBoxPrototype() {
+			return '<div class="suggestion-box"><div>';
+		}
+		function __getSuggestionBoxContentPrototype() {
+			return '<ul class="suggestion-box-items">{{items}}</ul>';
+		}
+		function __getSuggestionItemPrototype() {
+			return '<li class="suggestion-box-item">{{value}}</li>';
+		}
+
+		return this;
+	};
 })

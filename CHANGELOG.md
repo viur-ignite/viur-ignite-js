@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 	- nth-root
 	- popup
 	- class toggler
+	- suggestions
 
 
 ## [1.0.3] - 2016-07-24

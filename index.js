@@ -2,16 +2,14 @@
 
 const PLUGIN_NAME = 'viur-ignite-js';
 
-var	path = require('path');
+const path = require('path');
+const isThere = require('is-there');
 
-var	gulp = require('gulp'),
-	gutil = require('gulp-util'),
-	rename = require('gulp-rename'),
-	concat = require('gulp-concat'),
-	uglify = require('gulp-uglify');
-
-var	isThere = require('is-there');
-
+const gulp = require('gulp');
+const gutil = require('gulp-util');
+const rename = require('gulp-rename');
+const concat = require('gulp-concat');
+const uglify = require('gulp-uglify');
 
 module.exports = {
 	build: function (options) {
@@ -21,9 +19,13 @@ module.exports = {
 			dest: './appengine/static/js'
 		};
 
-		if (typeof options === 'undefined') var options = {};
+		if (typeof options === 'undefined') {
+			options = {};
+		}
 		for (var key in defaultOptions) {
-			if (typeof options[key] === 'undefined') options[key] = defaultOptions[key];
+			if (typeof options[key] === 'undefined') {
+				options[key] = defaultOptions[key];
+			}
 		}
 
 		// minify js and put in single file
@@ -42,11 +44,14 @@ module.exports = {
 			overwrite: false
 		};
 
-		if (typeof options === 'undefined') var options = {};
-		for (var key in defaultOptions) {
-			if (typeof options[key] === 'undefined') options[key] = defaultOptions[key];
+		if (typeof options === 'undefined') {
+			options = {};
 		}
-
+		for (var key in defaultOptions) {
+			if (typeof options[key] === 'undefined') {
+				options[key] = defaultOptions[key];
+			}
+		}
 
 		if (isThere(options.dest) && (options.overwrite === false || options.overwrite === 'false')) {
 			throw new gutil.PluginError(PLUGIN_NAME, '\'' + options.dest + '\' already exists\n\tcall function with option overwrite: true');
