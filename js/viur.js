@@ -34,7 +34,7 @@ function formatBytes (bytes, decimals) {
  */
 $(function() {
 	// scroll to an element
-	$.fn.scrollto = function (options) {
+	$.fn.scrollTo = function (options) {
 		options = $.extend({
 			speed: 1000,
 			easing: 'swing',
@@ -85,7 +85,7 @@ $(function() {
 			else
 				return console.error('No Scroll Target');
 
-			return $(target).scrollto(options);
+			return $(target).scrollTo(options);
 		});
 	};
 
@@ -103,7 +103,7 @@ $(function() {
 		if (typeof speed != 'undefined') options.speed = speed;
 		if (typeof easing != 'undefined') options.easing = easing;
 
-		$target.scrollto(options);
+		$target.scrollTo(options);
 	});
 
 
@@ -117,7 +117,6 @@ $(function() {
 		}, options);
 
 		if (! $(this).elementExist() ) {
-			console.error('element doesnt exist');
 			return false;
 		}
 
@@ -150,7 +149,7 @@ $(function() {
 	$.createPopup = function (options) {
 		options = $.extend({
 			title: 'VIUR Popup',
-			content: 'This is a VIUR popup',
+			html: 'This is a VIUR popup',
 			footer: '',
 			button: [
 				{title:'Close', class: 'popup-close'}
@@ -172,8 +171,8 @@ $(function() {
 			options.button.forEach(function (val, index) {
 				if (typeof options.button[index].onClick === 'undefined') options.button[index].onClick = $.noop;
 
-				if(!!val.custom) {
-					button += val.custom;
+				if(!!val.html) {
+					button += val.html;
 				} else {
 					button += __getButtonPrototype()
 						.replace('{{class}}', !!val.class ? val.class : '')
@@ -186,7 +185,7 @@ $(function() {
 
 		var popup = __getPopupPrototype()
 			.replace('{{header}}', options.title)
-			.replace('{{content}}', options.content)
+			.replace('{{content}}', options.html)
 			.replace('{{button}}', button)
 			.replace('{{footer}}', options.footer);
 
