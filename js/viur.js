@@ -245,7 +245,7 @@ $(function() {
 			type: 'data', // type: url or data
 			caseSensitive: false,
 			onSelect: $.noop, // after select
-			onType: $.noop // ^= keyup
+			onType: $.noop // ^= keydown
 		}, options);
 
 		var $elements = $(this);
@@ -291,6 +291,7 @@ $(function() {
 							var text = $suggestionBox.find('.suggestion-box-item.is-active').text();
 							$element.val(text);
 							$suggestionBox.hide();
+							options.onSelect.call(null, this, null);
 							break;
 
 						default:
@@ -299,6 +300,8 @@ $(function() {
 							moveIndex = 0; // reset moveIndex for new suggestions
 							break;
 					}
+
+					options.onType.call(null, this, null);
 				});
 			});
 		}
@@ -336,7 +339,7 @@ $(function() {
 					$.ajax({
 						url: options.url,
 						data: {q: q},
-						async: false, // Its deprecated, but sync ajax sucks
+						async: false, // Its deprecated, but async ajax sucks
 						dataType: 'json',
 						success: function (response) {
 							arr = response;
