@@ -1,7 +1,9 @@
 /**
- * VIUR JS FRAMEWORK
+ * VIUR JS FRAMEWORK v1.0.4
+ *
  * http://ignite.viur.is
  * https://github.com/viur-ignite/viur-ignite-js
+ *
  * Copyleft Mausbrand Infosys
  * Released under the GLP-3.0 license
  */
@@ -160,7 +162,7 @@ $(function() {
 
 		// create overlay if doesnt exist
 		if (! $('.popup-overlay').elementExist() )
-			$('body').append('<div class="popup-overlay"></div>');
+			$('body').append('<div class="popup-overlay" style="display:none"></div>').show();
 
 		// remove other popups
 		$('.popup').remove();
@@ -191,7 +193,8 @@ $(function() {
 
 		var $popup = $(popup)
 			.popup({onOpen: options.onOpen, onClose: options.onClose})
-			.appendTo('body');
+			.appendTo('body')
+			.show();
 
 		// action by buttons with data-index
 		$popup.find('.formActions > button[data-index]').on('click', function () {
@@ -202,7 +205,7 @@ $(function() {
 		});
 
 		function __getPopupPrototype() {
-			return '<div class="popup">\
+			return '<div class="popup" style="display:none">\
 						<div class="popup-box">\
 							<header class="popup-header">{{header}}</header>\
 							<div class="popup-content">\

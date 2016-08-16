@@ -2,7 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-### Addded
+nothing since last release
+
+
+## [1.0.4] - 2016-08-16
+### Added
 - Functions
 	- Scroller
 	- formatBytes
@@ -16,5 +20,6 @@ All notable changes to this project will be documented in this file.
 - Changelog started here
 
 
-[Unreleased]: https://github.com/viur-ignite/viur-ignite-js/compare/1.0.3...develop
+[Unreleased]: https://github.com/viur-ignite/viur-ignite-js/compare/1.0.4...master
+[1.0.4]: https://github.com/viur-ignite/viur-ignite-js/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/viur-ignite/viur-ignite-js/compare/9ea72d71e86f4ed4d05c9cf36d7a6e2148216437...1.0.3

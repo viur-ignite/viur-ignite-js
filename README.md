@@ -1,6 +1,6 @@
 [![npm version](https://badge.fury.io/js/viur-ignite-js.svg)](https://badge.fury.io/js/viur-ignite-js)
 [![Dependency Status](https://david-dm.org/viur-ignite/viur-ignite-js.svg)](https://david-dm.org/viur-ignite/viur-ignite-js)
-[![Build Status](https://travis-ci.org/viur-ignite/viur-ignite-js.svg?branch=develop)](https://travis-ci.org/viur-ignite/viur-ignite-js)
+[![Build Status](https://travis-ci.org/viur-ignite/viur-ignite-js.svg)](https://travis-ci.org/viur-ignite/viur-ignite-js)
 [![GitHub license](https://img.shields.io/badge/license-GPL-blue.svg)](https://raw.githubusercontent.com/viur-ignite/viur-ignite-js/master/LICENSE)
 
 # VIUR Ignite JS
@@ -8,7 +8,9 @@
 >The ViUR Ignite Framework is the first attempt in building a sturdy foundation for ViUR products and Mausbrand projects.<br>This CSS toolkit is the very core of ViUR Ignite. It is built upon the principles of many CSS guides and frameworks.
 
 VIUR Ignite JS is an extenstion to [VIUR Ignite CSS](https://github.com/viur-ignite/viur-ignite-css). It's a simple JavaScript libary based on jQuery.
+
 For a detailed introduction on the ViUR ignite framework and examples have a look at [http://ignite.viur.is](http://ignite.viur.is).
+
 
 ## Install
 ```
