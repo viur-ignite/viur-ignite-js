@@ -162,7 +162,7 @@ $(function() {
 
 		// create overlay if doesnt exist
 		if (! $('.popup-overlay').elementExist() )
-			$('body').append('<div class="popup-overlay" style="display:none"></div>').show();
+			$('body').append('<div class="popup-overlay"></div>');
 
 		// remove other popups
 		$('.popup').remove();
@@ -191,10 +191,10 @@ $(function() {
 			.replace('{{button}}', button)
 			.replace('{{footer}}', options.footer);
 
+		// #FIXME: css-fade-effect doesnt work with this code ...
 		var $popup = $(popup)
-			.popup({onOpen: options.onOpen, onClose: options.onClose})
 			.appendTo('body')
-			.show();
+			.popup({onOpen: options.onOpen, onClose: options.onClose});
 
 		// action by buttons with data-index
 		$popup.find('.formActions > button[data-index]').on('click', function () {
@@ -205,7 +205,7 @@ $(function() {
 		});
 
 		function __getPopupPrototype() {
-			return '<div class="popup" style="display:none">\
+			return '<div class="popup">\
 						<div class="popup-box">\
 							<header class="popup-header">{{header}}</header>\
 							<div class="popup-content">\
