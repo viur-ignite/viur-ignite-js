@@ -50,8 +50,8 @@ var cookie = {
 	},
 
 	getCookie: function (name) {
-		nameEQ = name + '=';
-		var cookies = document.cookie.split(';');
+		var	nameEQ = name + '=',
+			cookies = document.cookie.split(';');
 
 		for (var i = 0; i < cookies.length; i++) {
 			var cookie = cookies[i];
