@@ -2,7 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-nothing since last release
+### Added
+- cookie functions (write, get, delete)
 
 
 ## [1.0.4] - 2016-08-16
