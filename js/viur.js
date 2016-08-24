@@ -79,6 +79,7 @@ var cookie = {
  */
 $(function() {
 	// scroll to an element
+	// #TODO add offset
 	$.fn.scrollTo = function (options) {
 		options = $.extend({
 			speed: 1000,
