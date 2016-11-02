@@ -126,8 +126,8 @@ $(function() {
 
 			if (!!$this.data('target'))
 				var target = $this.data('target');
-			else if (!!$this.attr('href'))
-				var target = $this.attr('href');
+			else if (!!$this.prop('href'))
+				var target = $this.prop('href');
 			else
 				return console.error('No Scroll Target');
 
